@@ -64,5 +64,12 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log("Port Is Running On My Server", port);
 });
+app.get("/", (req, res) => {
+  res.send("Running Gym Equipment Server");
+});
+
+app.listen(port, () => {
+  console.log("Port Is Running On My Server", port);
+});
 
 // askjdfsdajkfajskfdokjfojf
