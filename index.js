@@ -31,7 +31,7 @@ async function run() {
 
     app.get("/product/:id", async (req, res) => {
       const id = req.params.id;
-      const query = { _id: ObjectId(id) };
+      const query = { _id: new ObjectId(id) };
       const product = await productCollection.findOne(query);
       res.send(product);
     });
@@ -44,14 +44,33 @@ async function run() {
       res.send(result);
     });
 
+    app.put("/product/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const product = req.body;
+      const option = { upsert: true };
+      const updateQuantity = {
+        $set: {
+          quantity: product.quantity,
+        },
+      };
+      const result = await productCollection.updateOne(
+        filter,
+        updateQuantity,
+        option
+      );
+      res.send(result);
+    });
+
     // Delete:
     app.delete("/product/:id", async (req, res) => {
       const id = req.params.id;
-      const query = { _id: ObjectId(id) };
+      const query = { _id: new ObjectId(id) };
       const result = await productCollection.deleteOne(query);
       res.send(result);
     });
   } finally {
+    // await client.close();
   }
 }
 
